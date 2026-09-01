@@ -1,6 +1,6 @@
-## 把技牢变成哈技美的形状
+## 总览
 
-#### 是进度条，我加了进度条
+#### 进度
 
 - [x] GAMES101
 
@@ -14,13 +14,17 @@
 
 - [ ] GAMES202
 
-#### 不不不前世记忆，这无疑是坏事啊
+#### 工具
 
 - [x] Blender
 
 - [x] Photoshop
 
 - [x] Material Maker
+      
+- [ ] Krita
+
+- [x] 3dsmax
 
 - [ ] Maya
 
