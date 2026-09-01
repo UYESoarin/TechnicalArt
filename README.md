@@ -21,14 +21,18 @@
 - [x] Photoshop
 
 - [x] Material Maker
-      
-- [ ] Krita
 
-- [x] 3dsmax
+- [x] 3dsMax
 
 - [ ] Maya
 
 - [ ] Zbrush
+
+- [ ] Krita
+
+- [ ] Substance 3D Designer
+
+- [ ] Substance 3D Painter
 
 - [ ] Houdini
 
