@@ -24,13 +24,13 @@
 
 - [x] 3dsMax
 
-- [ ] Maya
+- [ ] Substance 3D Designer
 
-- [ ] Zbrush
+- [ ] Maya
 
 - [ ] Krita
 
-- [ ] Substance 3D Designer
+- [ ] Zbrush
 
 - [ ] Substance 3D Painter
 

@@ -141,13 +141,13 @@ Shader "[Path/Name]"{
 |`Blend`|Note|
 |:-:|:-:|
 |`[SrcFactor] [DstFactor]`|`[One, Zero, OneMinus, Src, Dst, Color(RGB), Alpha]`<br>`SrcCol * SrcFactor [BlendOp] DstCol * DstFactor`|
-|`SrcAlpha OneMinusSrcAlpha`|Normal transparent when SrcAlpha = 0|
-|`One OneMinusSrcAlpha`|`One` Transparent when SrcCol = 0 (with SrcAlpha)|
-|`DstColor  Zero`|`Multiply`: shadeMultiply|
-|`OneMinusDstColor One`|`Soft Additive`: lightMultiply|
+|`SrcAlpha OneMinusSrcAlpha`|`Normal`: Transparent when SrcAlpha = 0|
+|`One OneMinusSrcAlpha`|Transparent when SrcCol = 0 (refer to SrcAlpha)|
+|`DstColor  Zero`|`Multiply`|
+|`OneMinusDstColor One`|`Soft Additive`|
 |`DstColor SrcColor`|`2x Multiply`|
-|`One One`|`Min`to`Darken`, `Max`to`Lighten`|
-|`One OneMinusSrcColor`||
+|`One One`|`Linear Dodge`: `Min`to`Darken`, `Max`to`Lighten`|
+|`One OneMinusSrcColor`|`Screen`|
 |`SrcAlpha One`|particleEffect|
 |`One Zero`|Default|
 
