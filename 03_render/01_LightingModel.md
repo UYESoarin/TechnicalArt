@@ -67,3 +67,6 @@
 <br>
 
 * $C_{lighting}=(C_{diffuse}+C_{specular}) \times C_{shadow}$
+
+### 附录 - 多光源光照模型
+在原光照模型基础上乘光源衰减（阴影、距离），逐光源叠加贡献

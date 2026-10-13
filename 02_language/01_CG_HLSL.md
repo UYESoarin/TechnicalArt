@@ -14,7 +14,7 @@
 |W2C|`mul(UNITY_MATRIX_VP, posWS)`|`TransformWorldToHClip(posWS)`||
 |nDirWS|`UnityObjectToworldNormal(nDirOS)`|`TransformObjectToWorldNormal(nDirOS)`|Non-uniform Scaling (auto Inverse Transpose Matrix)|
 |vDirWS|`_WorldSpaceCameraPos - posWS`|`GetWorldSpaceViewDir(posWS)`|ToNormalized<br>`GetWorldSpaceNormalizedViewDir(posWS)`|
-|cameraPosWS|`_WorldSpaceCameraPos`|`GetCameraPositionWS()`||
+|cameraPosWS|`_WorldSpaceCameraPos`|`GetCameraPositionWS()`|`float3 CameraPosOS = mul(GetWorldToObjectMatrix(), float4(GetCameraPositionWS(), 1)).xyz`|
 |C2S(NDC)|`posCS.xy/posCS.w * 0.5 + 0.5`|`GetNormalizedScreenSpace(posCS)`|platform YFlip|
 |ScreenResolution|`_ScreenParams.xy`|`GetScaledScreenParams().xy`||
 
@@ -24,8 +24,8 @@
 |:-:|:-:|:-:|:-:|
 |**Data**|
 |shadowCoord|`SHADOW_COORDS(idx)` (v2f i.texcoord[idx], i.pos)<br>`TRANSFER_SHADOW(v2f o)`(vert)|`TransfromWorldToShadowCoord(posWS)`|`float4` W2Shadow|
-|lDir/Col/shadow|`_WoldSpaceLightPos0.xyz`/`_LightColor0.rgb`/`SHADOW_ATTENUATION(v2f i)`(frag)|`GetMainLight()`|HLSL: `struct Light{half3 direction, color, distanceAttenuation, shadowAttenuation};`|
-|extraLights|`#pragma multi_compile_fwdadd`|`GetAdditionalLight(shadowCoord)`|HLSL: Return `Light`<br> Cycle with `GetAdditionalLightsCount()`|
+|lDir/Col/shadow|`_WoldSpaceLightPos0.xyz`/`_LightColor0.rgb`/`SHADOW_ATTENUATION(v2f i)`(frag)|`GetMainLight([shadowCoord])`|HLSL: `struct Light{half3 direction, color, distanceAttenuation, shadowAttenuation};`|
+|extraLights|`#pragma multi_compile_fwdadd`|`#pragma multi_compile _ _ADDITIONAL_LIGHTS` <br> `#if defined(_ADDITIONAL_LIGHTS) #endif` <br> `GetAdditionalLight(uint idx, float3 posWS)`|HLSL: Return `Light`<br> Cycle with `GetAdditionalLightsCount()`|
 |**Model**|
 |Lambert|`max(0.0, dot(n, l)) * lCol`|`LightingLambert(lCol, lDir, nDir)`||
 |Blinn-Phong|`pos(max(0.0, dot(n, h)), gloss)`|`LightingSpecular(lCol, lDir, nDir, vDir, specular, smoothness)`||
@@ -86,7 +86,7 @@
 |取余|`frac`, `fmod` 用于浮点数|`%` 用于 `int/uint`；`frac(x)` 即 `fmod(x, 1)`；对 n 取模返回 `[0, n)`|
 |边界限制|`clamp`, `saturate`, `max`, `min`, `abs`|风格化、离散选区|
 |插值/阶跃|`lerp`, `step`, `smoothstep`|遮罩与条件二值，对目标区间变量插值实现动态变化|
-|线代|`dot`, `cross`, `normalize`, `length`, `distance`,`mul`|`mul`兼容矩阵左/右乘列/行向量|
+|线代|`dot`, `cross`, `normalize`, `length`, `distance`,`mul`, `reflect`, `refract(i, n, eta)`|`mul`兼容矩阵左/右乘列/行向量|
 |导数|`ddx`, `ddy`, `fwidth`|
 |丢弃|`clip`, `discard`|
 ---
@@ -142,7 +142,7 @@ c/c++
 ```
 
 #### 3.4 SRP Batcher CBUFFER (Macros) `可编程渲染管线批处理器常量缓冲区宏`
-
+  
 ```hlsl
 //URP variables declare
 CBUFFER_START(UnityPerMaterial)

@@ -1,4 +1,20 @@
 # 一、分层
+
+大标题
+
+=========
+
+小标题
+
+---------
+# 一级标题
+
+## 二级标题
+
+### 三级标题
+
+#### 四级标题
+
 # FirstTitle
 ## <font face = "仿宋" color = orange>二级标题结合HTML</font>
 <font face = "楷体" color = blue size=128><center>居中</center></font>
@@ -15,12 +31,27 @@
 ***
 ---
 # 三、列表
+## 程序
+- Github与repo
+    - README.md 介绍、功能、用例、下载、文档等
+    - doc 文档
+    - scripts 脚本
+    - config 配置
+    - src 源码
+    - test 测试与数据
+    - PSP 预估耗时
+- 需求
+    - 基本
+    - 扩展
+    - 高级
+- 功能
 ## 无序列表
-- 列表1.1
-- 列表1.2
-* 列表2.1
-+ 列表3.1
-    + 列表嵌套
+- 列表1
+    - 列表1.1
+        - 列表1.1.1
+- 列表2
+* 列表3
++ 列表4
 ## 有序列表
 1. **第一点**
 2. 第二点
@@ -48,7 +79,7 @@
 |a|b|c|
 ## 引用
 >你说的对
->————鲁迅
+--鲁迅
 ## 代码
 1. single
 `print('Python')`
@@ -74,6 +105,30 @@ int main(){
 [![pmVvvM6.png](https://s41.ax1x.com/2026/06/04/pmVvvM6.png)](https://imgchr.com/i/pmVvvM6)
 - 结合HTML调整
 <a href="https://imgchr.com/i/pmVvvM6"><div align = center><img src="https://s41.ax1x.com/2026/06/04/pmVvvM6.md.png" alt="pmVvvM6.png" border="0" width = 100% height = 100%/></div></a>
+
+## 流程图
+```mermaid
+sequenceDiagram
+participant A
+participant B
+participant C
+
+A->B:
+B->>A:desc
+C->>C:
+alt xxx
+    A->>B: 1
+else
+    A->B: 2
+end
+```
+```mermaid
+graph TD
+    A{A} -->|if 1| B[B0]
+    B[B1] --> C[C]
+    A -->|if 2| D[B2]
+
+```
 
 ***
 # 六、数学公式

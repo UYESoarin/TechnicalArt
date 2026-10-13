@@ -14,22 +14,28 @@
 
 * **排序 `Sort`**
 渲染队列 `RenderQueue`
-    1. 不透明队列**自前而后**（RenderQueue < 2500） 
+    1. 不透明队列**自前而后**（RenderQueue < 2500）
     2. 透明队列**自后而前**（RenderQueue > 2500）
-* **动态合批**
+
 
 * **打包数据 - 3D vertices input**
 模型代码：顶点坐标、法线、UV、切线、顶点色、索引列表
 变换矩阵、灯光、材质参数、磁盘图片
-* **提交 SetPassCall & DrawCall**
 
+* **提交 SetPass Call & Draw Call**
+性能焦点：draw call/复制个数 - 合批合并优化
+
+* **动态合批**
 
 ---
 
 ### 2. GPU
-#### 2.1 Vertex Shader Processing
 
-处理CPU数据，顶点变换到裁剪空间
+#### 2.1 Geometry Stage
+
+##### 2.1.1 Vertex Shader Processing
+
+处理CPU数据，坐标变换，逐顶点光照
 
 * ###### 注：暂无几何着色器（Geometry：三角形外部加顶点）、曲面细分着色器（Tensselation：三角形内部加顶点）
 
@@ -40,23 +46,30 @@
     **Veiw** Matrix 推进
     3. 相机/视图/观察空间`View Space`：朝向-z轴的摄像机为原点的坐标系，右手系 +x向右 +y向上 -z向内，离相机越远 z 绝对值（深度）越大
     **Projection** Matrix 推进
-    4. 裁剪空间`Clip Space`：取 w 为观察空间坐标深度的齐次坐标系 (x,y,z,w) ，逻辑上视锥体坍缩为立方体，并将视锥体条件范围外顶点剔除
+    4. 裁剪空间`Clip Space`：**保留坐标**准备插值，取 w 为观察空间坐标深度的齐次坐标系 (x,y,z,w) ，逻辑上齐次除法得视锥体坍缩为立方体
+    
+* 裁剪：将视锥体条件范围外顶点剔除，根据法线方向配置背面剔除
 
+##### 2.1.2 Screen MApping
 
-#### 2.2 Triangle Processing & Rasterization
-
-映射屏幕空间，点连成图元，图元光栅化得片元与插值数据
+映射屏幕空间
 
 * 标准化设备坐标 `NDC`：裁剪空间坐标 (x,y,z) 除以 w 所得坐标范围固定的三维空间（透视除法）
-* 背面剔除：根据法线方向
 * 屏幕空间 `Screen Space`：NDC 视口变换后重映射适配屏幕分辨率，原点位于角落
-* 图元装配：顶点连线
-* 光栅化：分配三角面与内部片元
+
+#### 2.2 Rasterization Stage
+
+##### 2.2.1  Triangle Processing
+
+点连成图元，图元光栅化得片元与插值数据
+
+* 图元装配：三角形设置，顶点连线
+* 光栅化：三角形遍历，分配三角面与内部片元
 
 
-#### 2.3. Fragment Shader Processing
+#### 2.2.2 Fragment Shader Processing
 
-根据已有数据对片元颜色处理输出
+片元颜色处理输出
 
 * 纹理着色
     * 纹理采样：贴图uv映射与采样器
@@ -72,6 +85,9 @@
         漫反射 `Diffuse` 、镜面反射 `Specular` 、环境 `Ambient`
     * 光照模型 `Lighting Model`
 
+#### 2.2.3 Fragment Operation
+
+修改颜色、深度缓冲、进行混合等
 
 ---
 

@@ -187,3 +187,5 @@ Shader
 |:-:|:-:|:-:|:-:|
 |Geometry|Opaque|On|Off|
 |Transparent|Transparent|Off|On|
+
+* ###### special pass: UsePass, GrabPass (CG)
