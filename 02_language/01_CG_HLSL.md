@@ -74,6 +74,15 @@
 |`_ScreenParams`|`float4(width, height, 1/width, 1/height)`|
 |`PI`|`3.1415926535897932384243...`|
 
+#### 1.7 PostProcessing - URP
+
+|Content|Code|Note|
+|:-:|:-:|:-:|
+|FragInput|`half4 Frag(Varyings input)`|`float2 uv = input.texcoord`|
+|ScreenTexture|`_BlitTexture`|`Blit.hlsl`|
+|TexelSize|`_BlitTexture_TexelSize`|`float4(texelWidth, texelHeight, texWidth, texHeight)` <br> `texelSize = 1 / texSize` <br> global declaration (out of CBUFFER)|
+|Sample|`SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, uv)`||
+
 ---
 
 ### 2. 数学函数
@@ -175,10 +184,15 @@ CBUFFER_END
 
 #### 4.2 HLSL
 >`#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/..."`
-
 >`Core.hlsl`
 >`Lighting.hlsl`
 >`Shadows.hlsl`
 >`DeclareDepthTexture.hlsl`
 >`SurfaceInput.hlsl` **(PBR)**
 >`Particles.hlsl`
+
+**PostProcessing**
+
+>`#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"`
+>`#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"`
+>`#include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"`
