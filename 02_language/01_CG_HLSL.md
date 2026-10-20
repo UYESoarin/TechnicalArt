@@ -78,7 +78,8 @@
 
 |Content|Code|Note|
 |:-:|:-:|:-:|
-|FragInput|`half4 Frag(Varyings input)`|`float2 uv = input.texcoord`|
+|vertex shader|`#pragma vertex Vert`|auto|
+|fragment shader|`#pragme fragment [FragName]` <br> `half4 [FragName](Varyings input)`|`float2 uv = input.texcoord`|
 |ScreenTexture|`_BlitTexture`|`Blit.hlsl`|
 |TexelSize|`_BlitTexture_TexelSize`|`float4(texelWidth, texelHeight, texWidth, texHeight)` <br> `texelSize = 1 / texSize` <br> global declaration (out of CBUFFER)|
 |Sample|`SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, uv)`||
@@ -155,8 +156,8 @@ c/c++
 ```hlsl
 //URP variables declare
 CBUFFER_START(UnityPerMaterial)
-    //Build-in RP uniform declare from Properties
-    //[Type] [NameInProperties];
+    // Build-in RP uniform declare from Properties
+    // [Type] [PropertyForPerMaterial];
     float4 _MainTex_ST;
 CBUFFER_END
 ```
@@ -183,16 +184,20 @@ CBUFFER_END
 > `UnityInstancing.cginc`
 
 #### 4.2 HLSL
->`#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/..."`
->`Core.hlsl`
->`Lighting.hlsl`
->`Shadows.hlsl`
->`DeclareDepthTexture.hlsl`
->`SurfaceInput.hlsl` **(PBR)**
->`Particles.hlsl`
+
+**Include**
+`#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/..."`
+> `Core.hlsl`
+> `Lighting.hlsl`
+> `Shadows.hlsl`
+> `DeclareDepthTexture.hlsl`
+> `SurfaceInput.hlsl` **(PBR)**
+> `Particles.hlsl`
 
 **PostProcessing**
+> `#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"`
+> `#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"`
+> `#include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"`
 
->`#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"`
->`#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"`
->`#include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"`
+**TempHeader**
+> `HLSLINCLUDE ...(#include/CBUFFER) ENDHLSL`
