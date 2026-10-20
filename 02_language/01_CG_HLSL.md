@@ -80,6 +80,7 @@
 |:-:|:-:|:-:|
 |vertex shader|`#pragma vertex Vert`|auto|
 |fragment shader|`#pragme fragment [FragName]` <br> `half4 [FragName](Varyings input)`|`float2 uv = input.texcoord`|
+|Texture|`TEXTURE2D_X()`|
 |ScreenTexture|`_BlitTexture`|`Blit.hlsl`|
 |TexelSize|`_BlitTexture_TexelSize`|`float4(texelWidth, texelHeight, texWidth, texHeight)` <br> `texelSize = 1 / texSize` <br> global declaration (out of CBUFFER)|
 |Sample|`SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_LinearClamp, uv)`||
@@ -94,8 +95,8 @@
 |指数/幂|`pow`, `exp`, `sqrt`, `rsqrt`|非线性调制|
 |取整|`floor`, `ceil`, `round`|`round(x)` 即 `step(0.5, x)`|
 |取余|`frac`, `fmod` 用于浮点数|`%` 用于 `int/uint`；`frac(x)` 即 `fmod(x, 1)`；对 n 取模返回 `[0, n)`|
-|边界限制|`clamp`, `saturate`, `max`, `min`, `abs`|风格化、离散选区|
-|插值/阶跃|`lerp`, `step`, `smoothstep`|`step(A, B)`(`B>=A?1:0`)<br>`smoothstep(edge - threshold, edge + threshold, mask)` 二值间扩展边界插值 <br> `smoothstep(A, B, X)` X 在 (A, B) 之间则平滑过渡 <br>遮罩与条件二值，对目标区间变量插值实现动态变化|
+|边界限制|`clamp`, `saturate`, `max`, `min`, `abs`|`clamp(X, A, B)` X 介于 (A, B) 返回 X，外则返回 A/B <br> 风格化、离散选区|
+|插值/阶跃|`lerp`, `step`, `smoothstep`|`step(A, B)`(`B>=A?1:0`) <br> `smoothstep(edge - threshold, edge + threshold, mask)` 边界外延二值间平滑遮罩 <br> `smoothstep(A, B, X)` X 介于 (A, B) 则在 (0, 1) 间平滑遮罩，外则返回 0/1 <br> 遮罩与条件二值，对目标区间变量插值实现动态变化|
 |线代|`dot`, `cross`, `normalize`, `length`, `distance`,`mul`, `reflect`, `refract(i, n, eta)`|`mul`兼容矩阵左/右乘列/行向量|
 |导数|`ddx`, `ddy`, `fwidth`|
 |丢弃|`clip`, `discard`|
